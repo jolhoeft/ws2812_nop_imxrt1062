@@ -2,6 +2,8 @@
 name = "ws2812-nop-imxrt1062"
 version = "0.1.0"
 edition = "2021"
+description = "Nop-based bitbanger for 600MHz (customizeable) IMXRT1062 devices"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
