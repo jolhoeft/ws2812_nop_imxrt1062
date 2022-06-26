@@ -1,6 +1,6 @@
 [package]
 name = "ws2812-nop-imxrt1062"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 description = "Nop-based bitbanger for 600MHz (customizeable) IMXRT1062 devices"
 license = "MIT"

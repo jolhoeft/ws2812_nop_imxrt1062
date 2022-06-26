@@ -15,30 +15,19 @@ Because I'm apparently too stupid to get a periodic timer working with ws2812-ti
 
 ## How?
 
-This library uses a simple for loop with no-ops inside.
-How many loops is determined by a magic number.
-
-The default magic_number is 50.
+This library uses a simple `nop` loop in assembly to wait.
 
 WS2812s read inputs with cycles about 333ns long.
 Write 3 bytes (GRB | Green, Red, Blue) _**per LED**_, then "latch" (set low) for 6us to 250us depending on your model.
 Writing a single bit entails a three-bit message that looks like `[1, x, 0]`, where x is the bit you want to write.
 That all is to say, to write a bit of `1` to an LED you must send `[1, 1, 0]`, waiting 333ns between each bit.
 
-
-As for the magic number, 600MHz a cycle should take 1.667 nanoseconds.
-The loop inside takes about 4-6 cycles, depending on your magic number (whether the loop is unrolled).
-This could be improved to be invariable by hand-rolling a loop in assembly.
-
-In theory that means 333ns should be about 50 unrolled loops.
-
-WS2812's have a pretty wide range of timing constraints,
-so this will work fine even with a clock rate of 720MHz.
-
-Calculate your own magic number: `333/((1000/CLOCK_SPEED_MHZ) * 4)`
-e.g.: 333/((1000/600) * 4) = ~50
+Despite WS2812 cycles allegedly being 333ns,
+some of the time constraints are very tight, and others are very loose.
 
 Find out more about the [timing constraints of WS2812s](https://wp.josh.com/2014/05/13/ws2812-neopixels-are-not-so-finicky-once-you-get-to-know-them/).
+
+P.S. I have the latch hard coded to 6us. If you need 250us shoot me an email or clone the project.
 
 ## Example using teensy4-bsp
 
@@ -75,7 +64,7 @@ fn main() -> ! {
     });
     let pin = GPIO::new(pins.p2).output();
 
-    let mut ws = ws2812_nop_imxrt1062::Ws2812::new(pin);
+    let mut ws = ws2812_nop_imxrt1062::Ws2812::new(pin, 600.0);
 
     loop {
         ws.write(data.iter().cloned()).unwrap();
