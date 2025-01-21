@@ -1,4 +1,3 @@
-#![feature(const_fn_floating_point_arithmetic)]
 // # Use ws2812 leds on imxrt1062 boards
 //
 // - For usage with `smart-leds`
