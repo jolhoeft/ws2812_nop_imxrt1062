@@ -108,7 +108,7 @@ where
     pub fn wait(&self, loops: i32) {
         unsafe {
             asm!(
-                "mov     r2, {0:e}",
+                "mov     r2, {0}",
 
                 "2:",
                     "nop",
